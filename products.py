@@ -1,4 +1,13 @@
 class Product:
+    """
+        Represents a specific type of product available in the store.
+        Attributes:
+            name (str): The name of the product.
+            price (float): The price of the product.
+            quantity (int): The current quantity of the product available in stock.
+            active (bool): Indicates whether the product is active (available for sale).
+    """
+
     def __init__(self, name: str, price: float, quantity: int):
         """
         Initializes a Product instance.
@@ -82,7 +91,7 @@ class Product:
         if not isinstance(quantity, int) or quantity <= 0:
             raise ValueError("The quantity should be a positive number.")
         if quantity > self.quantity:
-            raise ValueError(f"The quantity of {self.name} is bigger than in stock ({self.quantity}).")
+            raise ValueError(f"The quantity of {self.name} is bigger than the available stock.")
         if not self.active:
             raise ValueError("This product is inactive.")
 
