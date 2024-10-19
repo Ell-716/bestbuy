@@ -90,11 +90,14 @@ def make_order(best_buy):
             print("Error adding product!\n")
 
     # Process the order if the order list is not empty
-    if order_list:
-        for product, quantity in order_list:
-            total_payment += product.buy(quantity)
-        print("*" * 8)
-        print(f"Order made! Total payment: ${total_payment:.2f}")
+    try:
+        if order_list:
+            for product, quantity in order_list:
+                total_payment += product.buy(quantity)
+            print("*" * 8)
+            print(f"Order made! Total payment: ${total_payment:.2f}")
+    except ValueError:
+        print("Error while making order! Quantity larger than what exists.")
 
 
 def start(best_buy):
