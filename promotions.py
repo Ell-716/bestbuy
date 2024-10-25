@@ -17,7 +17,7 @@ class Promotion(ABC):
         self.name = name
 
     @abstractmethod
-    def apply_promotion(self, product, quantity) -> float:
+    def apply_promotion(self, product, quantity):
         """
         Applies the promotion to a product for a given quantity.
         Args:
@@ -38,7 +38,7 @@ class SecondHalfPrice(Promotion):
     In this promotion, for every two items purchased, the second item is at half price.
     """
 
-    def apply_promotion(self, product, quantity) -> float:
+    def apply_promotion(self, product, quantity):
         """
         Applies the second item at half price promotion to a product.
         Args:
@@ -50,7 +50,8 @@ class SecondHalfPrice(Promotion):
         full_price_items = quantity // 2
         half_price_items = quantity // 2
         remaining_items = quantity % 2
-        total_cost = ((full_price_items + remaining_items) * product.price) + (half_price_items * (product.price * 0.5))
+        total_cost = (((full_price_items + remaining_items) * product.price) +
+                      (half_price_items * (product.price * 0.5)))
 
         return total_cost
 
@@ -61,7 +62,7 @@ class ThirdOneFree(Promotion):
     In this promotion, for every three items purchased, one item is free.
     """
 
-    def apply_promotion(self, product, quantity) -> float:
+    def apply_promotion(self, product, quantity):
         """
         Applies the buy two, get one free promotion to a product.
         Args:
@@ -96,7 +97,7 @@ class PercentDiscount(Promotion):
             raise ValueError("Percent should be a positive number between 0 and 100.")
         self.percent = percent
 
-    def apply_promotion(self, product, quantity) -> float:
+    def apply_promotion(self, product, quantity):
         """
         Applies the percentage discount promotion to a product.
         Args:
