@@ -97,4 +97,77 @@ class Product:
 
         self.set_quantity(self.quantity - quantity)  # Update quantity after purchase.
 
-        return round(self.price * quantity, 2)  # Return total price rounded to 2 decimal places.
+        return round(self.price * quantity, 2)
+
+
+class NonStockedProduct(Product):
+    """
+        Represents a non-stocked product, typically a digital item that doesn’t require inventory tracking.
+        Quantity is always zero for this type of product.
+        Attributes:
+            name (str): The name of the product.
+            price (float): The price of the product.
+    """
+    def __init__(self, name: str, price: float, quantity=0):
+        """
+            Initializes a NonStockedProduct instance with a fixed quantity of zero.
+            Args:
+                name (str): The name of the product.
+                price (float): The price of the product.
+        """
+        super().__init__(name, price, quantity=0)
+
+    def show(self) -> str:
+        """
+            Returns a string representation of the non-stocked product.
+            Returns:
+                str: A string showing the product's name and price, without quantity.
+        """
+        return f"{self.name}, Price: ${self.price:.2f}"
+
+
+class LimitedProduct(Product):
+    """
+    Represents a product with a strict purchase limit, restricting the purchase
+    to only one unit per transaction.
+    Attributes:
+        name (str): The name of the product.
+        price (float): The price of the product.
+        quantity (int): The available quantity of the product in stock.
+    """
+
+    def __init__(self, name: str, price: float, quantity: int):
+        """
+        Initializes a LimitedProduct instance with a fixed max_purchase of 1.
+        Args:
+            name (str): The name of the product.
+            price (float): The price of the product.
+            quantity (int): The available quantity of the product in stock.
+        """
+        super().__init__(name, price, quantity)
+        self.max_purchase = 1  # Fixed to allow only one unit per purchase
+
+    def show(self) -> str:
+        """
+        Returns a string representation of the limited product.
+        Returns:
+            str: A string showing the product's name, price, quantity, and maximum purchase limit.
+        """
+        return (f"{self.name}, Price: ${self.price:.2f}, Quantity: {self.quantity}, "
+                f"Maximum purchase: {self.max_purchase}")
+
+    def buy(self, quantity: int) -> float:
+        """
+        Buys a given quantity of the product, ensuring it doesn't exceed the fixed max purchase limit of 1.
+        Args:
+            quantity (int): The quantity to purchase.
+        Returns:
+            float: The total price of the purchase.
+        Raises:
+            ValueError: If the quantity exceeds the max purchase limit.
+        """
+        if quantity > self.max_purchase:
+            raise ValueError("Error while making order! Only 1 unit can be purchased.")
+
+        # Use the parent class's buy() method to complete the purchase
+        return super().buy(quantity)

@@ -132,11 +132,12 @@ def main():
     The main function sets up the initial stock of products and starts the store interface.
     """
     # Setup initial stock of inventory
-    product_list = [
-        products.Product("MacBook Air M2", price=1450, quantity=100),
-        products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
-        products.Product("Google Pixel 7", price=500, quantity=250)
-    ]
+    product_list = [products.Product("MacBook Air M2", price=1450, quantity=100),
+                    products.Product("Bose QuietComfort Earbuds", price=250, quantity=500),
+                    products.Product("Google Pixel 7", price=500, quantity=250),
+                    products.NonStockedProduct("Windows License", price=125),
+                    products.LimitedProduct("Shipping", price=10, quantity=250, max_purchase=1)
+                    ]
 
     # Create a Store object with the product list
     best_buy = store.Store(product_list)
