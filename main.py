@@ -77,13 +77,16 @@ def make_order(best_buy):
                 product = available_products[order_item - 1]
 
                 # Check if enough stock is available for the requested quantity
-                if order_quantity > product.quantity:
+                if isinstance(product, products.NonStockedProduct):
+                    # For non-stocked products, allow any quantity
+                    order_list.append((product, order_quantity))
+                    print("Product added to list!\n")
+                elif order_quantity > product.quantity:
                     print("Not enough stock available.\n")
                 else:
                     # Add the product and quantity to the order list
                     order_list.append((product, order_quantity))
                     print("Product added to list!\n")
-                    print()
             else:
                 print("Invalid product number. Try again!\n")
 
@@ -94,11 +97,23 @@ def make_order(best_buy):
     try:
         if order_list:
             for product, quantity in order_list:
-                total_payment += product.buy(quantity)
+                # Calculate the cost with promotion if applicable
+                if product.get_promotion() is not None:
+                    total_payment += product.get_promotion().apply_promotion(product, quantity)
+                else:
+                    total_payment += product.buy(quantity)  # Use buy method to validate and calculate cost
+
+                # Update the product quantity
+                product.quantity -= quantity
+
+                # Deactivate the product if the quantity reaches zero
+                if product.quantity == 0:
+                    product.active = False  # Assuming there's an 'active' attribute in your product class
+
             print("*" * 8)
             print(f"Order made! Total payment: ${total_payment:.2f}")
-    except ValueError:
-        print("Error while making order! Quantity larger than what exists.")
+    except ValueError as e:
+        print(str(e))
 
 
 def start(best_buy):
