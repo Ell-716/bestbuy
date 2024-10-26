@@ -137,6 +137,7 @@ def start(best_buy):
             elif choice == 3:
                 make_order(best_buy)
             elif choice == 4:
+                print("\nThank you for vising our store! Bye!")
                 break
             else:
                 print("Invalid choice. Try again!")
