@@ -48,7 +48,7 @@ def test_set_quantity():
     product = Product("MacBook Air M2", price=1450, quantity=100)
     assert isinstance(product, Product)
     assert product.is_active()
-    product.set_quantity(0)
+    product.quantity = 0  # Use the property setter
     assert not product.is_active()
 
 
@@ -56,11 +56,11 @@ def test_product_purchase_modifies_quantity_and_returns_right_output():
     product = Product("MacBook Air M2", price=100, quantity=100)
     total_cost = product.buy(5)
     assert total_cost == 500, "Total cost should be 500 for 5 units at $100 each."
-    assert product.get_quantity() == 95, "Quantity should be reduced to 95 after purchasing 5 units."
+    assert product.quantity == 95, "Quantity should be reduced to 95 after purchasing 5 units."
 
 
 def test_buying_larger_quantity_raises_exception():
     product = Product("MacBook Air M2", price=100, quantity=10)
 
-    with pytest.raises(ValueError, match="The quantity of MacBook Air M2 is bigger than the available stock."):
+    with pytest.raises(ValueError, match="The quantity of MacBook Air M2 is larger than available stock."):
         product.buy(20)

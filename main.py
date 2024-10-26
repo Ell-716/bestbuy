@@ -20,7 +20,7 @@ def display_products(best_buy):
         best_buy (Store): The store object containing the products.
     """
     print("-" * 6)
-    for index, product in enumerate(best_buy.get_all_products(), start=1):
+    for index, product in enumerate(best_buy.all_products, start=1):
         print(f"{index}. {product.show()}")
     print("-" * 6)
 
@@ -31,7 +31,7 @@ def display_total_items(best_buy):
     Args:
         best_buy (Store): The store object containing the products.
     """
-    print(f"Total of {best_buy.get_total_quantity()} items in the store")
+    print(f"Total of {best_buy.total_quantity} items in the store")
 
 
 def make_order(best_buy):
@@ -47,10 +47,9 @@ def make_order(best_buy):
     print("When you want to finish the order, enter empty text.")
 
     order_list = []  # List to hold the items being ordered
-    total_payment = 0  # Variable to track the total payment
 
     while True:
-        available_products = best_buy.get_all_products()
+        available_products = best_buy.all_products  # Use the property for products
         if not available_products:
             print("No products available for order.")
             break
@@ -84,7 +83,7 @@ def make_order(best_buy):
                 elif order_quantity > product.quantity:
                     print("Not enough stock available.\n")
                 else:
-                    # Add the product and quantity to the order list
+                    # For stocked products, add the product and quantity to the order list
                     order_list.append((product, order_quantity))
                     print("Product added to list!\n")
             else:
@@ -94,26 +93,29 @@ def make_order(best_buy):
             print("Error adding product!\n")
 
     # Process the order if the order list is not empty
-    try:
-        if order_list:
-            for product, quantity in order_list:
-                # Calculate the cost with promotion if applicable
-                if product.get_promotion() is not None:
-                    total_payment += product.get_promotion().apply_promotion(product, quantity)
+    if order_list:
+        total_payment = 0  # Reset total payment for new order
+        for product, quantity in order_list:
+            try:
+                # Calculate the total cost using the product's promotion, if any
+                if product.promotion:
+                    # Apply promotion and get the total cost
+                    total_cost = product.promotion.apply_promotion(product, quantity)
                 else:
-                    total_payment += product.buy(quantity)  # Use buy method to validate and calculate cost
+                    # No promotion; calculate regular price
+                    total_cost = product.price * quantity
 
-                # Update the product quantity
-                product.quantity -= quantity
+                # Deduct the quantity from the product
+                product.buy(quantity)  # This should handle updating the stock
 
-                # Deactivate the product if the quantity reaches zero
-                if product.quantity == 0:
-                    product.active = False  # Assuming there's an 'active' attribute in your product class
+                # Add to the total payment
+                total_payment += total_cost
 
-            print("*" * 8)
-            print(f"Order made! Total payment: ${total_payment:.2f}")
-    except ValueError as e:
-        print(str(e))
+            except ValueError as e:
+                print(str(e))
+
+        print("*" * 8)
+        print(f"Order made! Total payment: ${total_payment:.2f}")
 
 
 def start(best_buy):
@@ -139,7 +141,6 @@ def start(best_buy):
             else:
                 print("Invalid choice. Try again!")
         except ValueError:
-            # Handle non-integer input for menu choices
             print("Invalid choice. Try again!")
 
 
@@ -162,9 +163,9 @@ def main():
     thirty_percent = promotions.PercentDiscount("30% off!", percent=30)
 
     # Add promotions to products
-    product_list[0].set_promotion(second_half_price)
-    product_list[1].set_promotion(third_one_free)
-    product_list[3].set_promotion(thirty_percent)
+    product_list[0].promotion = second_half_price
+    product_list[1].promotion = third_one_free
+    product_list[3].promotion = thirty_percent
 
     # Create a Store object with the product list
     best_buy = store.Store(product_list)
