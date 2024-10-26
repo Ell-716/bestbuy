@@ -95,7 +95,7 @@ class Product:
         """Deactivates the product."""
         self._active = False
 
-    def show(self) -> str:
+    def __str__(self):
         """Returns a string representation of the product, including its promotion if available."""
         promotion_info = self.promotion.name if self.promotion else "None"
         return f"{self._name}, Price: ${self._price:.2f}, Quantity: {self.quantity}, Promotion: {promotion_info}"
@@ -130,7 +130,7 @@ class NonStockedProduct(Product):
         """Initializes a NonStockedProduct instance with a fixed quantity of zero."""
         super().__init__(name, price, quantity=0)
 
-    def show(self) -> str:
+    def __str__(self):
         """Returns a string representation of the non-stocked product, including promotion details if available."""
         promotion_info = self.promotion.name if self.promotion else "None"
         return f"{self._name}, Price: ${self._price:.2f}, Quantity: Unlimited, Promotion: {promotion_info}"
@@ -152,7 +152,7 @@ class LimitedProduct(Product):
         super().__init__(name, price, quantity)
         self._max_purchase = 1  # Fixed to allow only one unit per purchase
 
-    def show(self) -> str:
+    def __str__(self):
         """Returns a string representation of the limited product."""
         promotion_info = self.promotion.name if self.promotion else "None"
         return (f"{self._name}, Price: ${self._price:.2f}, Limited to {self._max_purchase} per order!, "

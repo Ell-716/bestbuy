@@ -21,7 +21,7 @@ def display_products(best_buy):
     """
     print("-" * 6)
     for index, product in enumerate(best_buy.all_products, start=1):
-        print(f"{index}. {product.show()}")
+        print(f"{index}. {product}")
     print("-" * 6)
 
 
