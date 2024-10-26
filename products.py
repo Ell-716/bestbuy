@@ -34,6 +34,81 @@ class Product:
         self._active = True  # Product is active upon initialization.
         self._promotion = None
 
+    def __lt__(self, product):
+        """
+        Checks if this product's price is less than the price of another product.
+        Args:
+            product (Product): The product instance to compare against.
+        Returns:
+            bool: True if this product's price is less, False otherwise.
+        Raises:
+            TypeError: If the compared object is not an instance of Product.
+        """
+        if not isinstance(product, Product):
+            raise TypeError("Comparisons must be between Product instances.")
+
+        return self.price < product.price
+
+    def __le__(self, product):
+        """
+        Checks if this product's price is less than or equal to the price of another product.
+        Args:
+            product (Product): The product instance to compare against.
+        Returns:
+            bool: True if this product's price is less than or equal, False otherwise.
+        Raises:
+            TypeError: If the compared object is not an instance of Product.
+        """
+        if not isinstance(product, Product):
+            raise TypeError("Comparisons must be between Product instances.")
+
+        return self.price <= product.price
+
+    def __gt__(self, product):
+        """
+        Checks if this product's price is greater than the price of another product.
+        Args:
+            product (Product): The product instance to compare against.
+        Returns:
+            bool: True if this product's price is greater, False otherwise.
+        Raises:
+            TypeError: If the compared object is not an instance of Product.
+        """
+        if not isinstance(product, Product):
+            raise TypeError("Comparisons must be between Product instances.")
+
+        return self.price > product.price
+
+    def __ge__(self, product):
+        """
+        Checks if this product's price is greater than or equal to the price of another product.
+        Args:
+            product (Product): The product instance to compare against.
+        Returns:
+            bool: True if this product's price is greater than or equal, False otherwise.
+        Raises:
+            TypeError: If the compared object is not an instance of Product.
+        """
+        if not isinstance(product, Product):
+            raise TypeError("Comparisons must be between Product instances.")
+
+        return self.price >= product.price
+
+    def __eq__(self, product):
+        """
+        Checks if two products are considered equal based on their price.
+        Args:
+            product (Product): The product instance to compare against.
+        Returns:
+            bool: True if the prices of the two products are equal, False otherwise.
+        Raises:
+            TypeError: If the compared object is not an instance of Product.
+        """
+        if not isinstance(product, Product):
+            raise TypeError("Comparisons must be between Product instances.")
+
+        return self.price == product.price
+
     @property
     def name(self):
         """Public property to access the name of the product."""

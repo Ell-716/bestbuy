@@ -13,6 +13,31 @@ class Store:
         """
         self._list_of_products = list_of_products
 
+    def __contains__(self, product):
+        """
+        Checks if the given product exists in the store.
+        Args:
+            product (Product): The product instance to check for existence in the store.
+        Returns:
+            bool: True if the product exists in the store, False otherwise.
+        """
+        return product in self._list_of_products
+
+    def __add__(self, store):
+        """
+        Combines two Store instances into a new Store instance containing products from both stores.
+        Args:
+            store (Store): The Store instance to combine with the current store.
+        Returns:
+            Store: A new Store instance containing products from both stores.
+        Raises:
+            TypeError: If the object being added is not an instance of Store.
+        """
+        if not isinstance(store, Store):
+            raise TypeError("Only Store instances can be added together.")
+
+        return Store(self._list_of_products + store.all_products)
+
     @property
     def list_of_products(self) -> list:
         """Getter for the list of products in the store."""
